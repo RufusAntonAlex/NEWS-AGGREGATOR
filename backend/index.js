@@ -16,8 +16,8 @@ mongoose.connect("mongodb://localhost:27017/Signup_Details", {
 
 app.post('/signup', async (req, res) => {
   try {
-    const { username, password, newsPreference } = req.body;
-    const newUser = new User({ username, password, newsPreference });
+    const { username, password } = req.body;
+    const newUser = new User({ username, password });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
@@ -46,5 +46,5 @@ app.post('/api/login', async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(Server is running on port ${PORT});
 });

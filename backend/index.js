@@ -16,8 +16,8 @@ mongoose.connect("mongodb://localhost:27017/Signup_Details", {
 
 app.post('/signup', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const newUser = new User({ username, password });
+    const { username, password, newsPreference } = req.body;
+    const newUser = new User({ username, password, newsPreference });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {

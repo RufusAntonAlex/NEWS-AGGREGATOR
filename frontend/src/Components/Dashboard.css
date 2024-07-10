@@ -112,3 +112,21 @@ body {
     width: 100%;
   }
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh; /* Adjust as needed */
+}
+
+.loading-image {
+  width: 70px; /* Adjust as needed */
+  height: 70px; /* Adjust as needed */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

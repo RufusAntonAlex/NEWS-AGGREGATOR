@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'; // Import CSS for styling
+import settings from '../assets/settings.png';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('General'); // Default category
+  const [loading, setLoading] = useState(true); // State to track loading
 
   useEffect(() => {
     fetchNews(selectedCategory);
   }, [selectedCategory]);
 
   const fetchNews = async (category) => {
+    setLoading(true); // Set loading to true when starting to fetch news
     try {
       const response = await fetch(`https://news-aggregator-backend-h2br.onrender.com/top-headlines?category=${category}&language=en&page=1&pageSize=80`);
       if (!response.ok) {
@@ -25,6 +28,8 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error('Error fetching news:', error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching news
     }
   };
 
@@ -62,20 +67,26 @@ const Dashboard = () => {
       </nav>
       <div className="content">
         <h2>Top Headlines ({selectedCategory})</h2>
-        <div className="articles">
-          {articles
-            .filter(article => article.title !== '[Removed]' && article.urlToImage)
-            .map((article, index) => (
-              <div key={index} className="article">
-                <img src={article.urlToImage} alt={article.title} className="article-image" />
-                <h3>{article.title}</h3>
-                <p>{article.description}</p>
-                <p>{article.publishedAt}</p>
-                <p>{article.content}</p>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
-              </div>
-            ))}
-        </div>
+        {loading ? (
+          <div className="loading">
+            <img src={settings} alt="Loading" className="loading-image" />
+          </div>
+        ) : (
+          <div className="articles">
+            {articles
+              .filter(article => article.title !== '[Removed]' && article.urlToImage)
+              .map((article, index) => (
+                <div key={index} className="article">
+                  <img src={article.urlToImage} alt={article.title} className="article-image" />
+                  <h3>{article.title}</h3>
+                  <p>{article.description}</p>
+                  <p>{article.publishedAt}</p>
+                  <p>{article.content}</p>
+                  <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                </div>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );
